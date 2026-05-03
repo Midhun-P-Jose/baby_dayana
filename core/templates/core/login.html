@@ -1,0 +1,19 @@
+{% extends 'core/index.html' %}
+{% block content %}
+<div class="glass-card">
+    <h1>Welcome, My Love</h1>
+    <p>Please enter our special key to unlock the memories.</p>
+    
+    {% if error %}
+    <div class="error-msg">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="input-group">
+            <input type="password" name="key" class="input-field" placeholder="Enter our secret key" required>
+        </div>
+        <button type="submit" class="btn-primary">Unlock My Heart</button>
+    </form>
+</div>
+{% endblock %}

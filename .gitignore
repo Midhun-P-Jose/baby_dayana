@@ -1,0 +1,26 @@
+# Python / Django
+__pycache__/
+*.py[cod]
+*$py.class
+*.sqlite3
+db.sqlite3
+
+# Virtual Environment
+venv/
+env/
+.env
+
+# Media and Static assets
+photos/
+audio/
+media/
+*.jpeg
+*.jpg
+*.png
+*.mp3
+*.mpeg
+
+# Temporary files / OS files
+cookies.txt
+.DS_Store
+Thumbs.db

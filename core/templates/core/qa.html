@@ -1,0 +1,121 @@
+{% extends 'core/index.html' %}
+{% block content %}
+<div class="content-section">
+    <h1 style="text-align: center; margin-bottom: 3rem;">How Well Do You Know Us?</h1>
+    
+    <div class="quiz-container" id="quiz-container">
+        <!-- Question 1 -->
+        <div class="quiz-card" id="q1">
+            <h3 class="quiz-question">When did we first meet?</h3>
+            <div class="quiz-options">
+                <button class="option-btn" onclick="checkAnswer(this, true, 'q1')">palill vech <span class="icon"></span></button>
+                <button class="option-btn" onclick="checkAnswer(this, false, 'q1')">dress edukan poyapol <span class="icon"></span></button>
+                <button class="option-btn" onclick="checkAnswer(this, false, 'q1')">josinte veetil <span class="icon"></span></button>
+            </div>
+            <div class="quiz-feedback" id="feedback-q1"></div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="quiz-card" id="q2" style="display: none;">
+            <h3 class="quiz-question">What was our first date?</h3>
+            <div class="quiz-options">
+                <button class="option-btn" onclick="checkAnswer(this, false, 'q2')">August 28 <span class="icon"></span></button>
+                <button class="option-btn" onclick="checkAnswer(this, true, 'q2')">september 4 <span class="icon"></span></button>
+                <button class="option-btn" onclick="checkAnswer(this, false, 'q2')">september 7 <span class="icon"></span></button>
+            </div>
+            <div class="quiz-feedback" id="feedback-q2"></div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="quiz-card" id="q3" style="display: none;">
+            <h3 class="quiz-question">Who is your favourite person?</h3>
+            <div class="quiz-options">
+                <button class="option-btn" onclick="checkAnswer(this, false, 'q3')">judil <span class="icon"></span></button>
+                <button class="option-btn" onclick="checkAnswer(this, false, 'q3')">judil baby <span class="icon"></span></button>
+                <button class="option-btn" onclick="checkAnswer(this, true, 'q3')">ponne <span class="icon"></span></button>
+            </div>
+            <div class="quiz-feedback" id="feedback-q3"></div>
+        </div>
+
+        <!-- Final Message -->
+        <div class="quiz-card" id="final-card" style="display: none;">
+            <h1>Yay! You know us so well! ❤️</h1>
+            <p>Every memory with you is a treasure I hold dear to my heart.</p>
+            <button onclick="restartQuiz()" class="btn-primary">Restart Quiz</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let currentQuestion = 1;
+    const totalQuestions = 3;
+
+    function checkAnswer(btn, isCorrect, questionId) {
+        const card = document.getElementById(questionId);
+        const options = card.querySelectorAll('.option-btn');
+        const feedback = document.getElementById(`feedback-${questionId}`);
+
+        // Disable all buttons in this card
+        options.forEach(opt => opt.disabled = true);
+
+        if (isCorrect) {
+            btn.classList.add('correct');
+            btn.querySelector('.icon').innerText = '✓';
+            feedback.innerText = "That's right, my love! ❤️";
+            feedback.className = "quiz-feedback success";
+            
+            setTimeout(() => {
+                nextQuestion();
+            }, 1500);
+        } else {
+            btn.classList.add('incorrect');
+            btn.querySelector('.icon').innerText = '✗';
+            feedback.innerText = "Not quite... try to remember! ✨";
+            feedback.className = "quiz-feedback fail";
+
+            setTimeout(() => {
+                options.forEach(opt => {
+                    opt.disabled = false;
+                    opt.classList.remove('incorrect');
+                    opt.querySelector('.icon').innerText = '';
+                });
+                feedback.innerText = "";
+            }, 1500);
+        }
+    }
+
+    function nextQuestion() {
+        document.getElementById(`q${currentQuestion}`).style.display = 'none';
+        currentQuestion++;
+        
+        if (currentQuestion <= totalQuestions) {
+            const nextCard = document.getElementById(`q${currentQuestion}`);
+            nextCard.style.display = 'block';
+            nextCard.style.animation = 'fadeIn 0.8s ease';
+        } else {
+            const finalCard = document.getElementById('final-card');
+            finalCard.style.display = 'block';
+            finalCard.style.animation = 'fadeIn 0.8s ease';
+        }
+    }
+
+    function restartQuiz() {
+        document.getElementById('final-card').style.display = 'none';
+        currentQuestion = 1;
+        
+        for(let i=1; i<=totalQuestions; i++) {
+            const card = document.getElementById(`q${i}`);
+            card.style.display = i === 1 ? 'block' : 'none';
+            const options = card.querySelectorAll('.option-btn');
+            options.forEach(opt => {
+                opt.disabled = false;
+                opt.classList.remove('correct', 'incorrect');
+                opt.querySelector('.icon').innerText = '';
+            });
+            document.getElementById(`feedback-q${i}`).innerText = "";
+        }
+    }
+</script>
+{% endblock %}

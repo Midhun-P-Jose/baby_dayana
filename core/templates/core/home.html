@@ -1,0 +1,26 @@
+{% extends 'core/index.html' %}
+{% block content %}
+<div class="content-section" style="text-align: center;">
+    <h1 style="font-size: 3rem; margin-bottom: 1rem;">Our Special Place</h1>
+    <p style="font-size: 1.2rem; color: var(--text-muted); margin-bottom: 3rem;">Where our memories live forever.</p>
+
+    <div class="menu-grid">
+        <a href="{% url 'photos' %}" class="menu-item">
+            <span class="menu-icon">📸</span>
+            <span class="menu-title">Our Photos</span>
+        </a>
+        <a href="{% url 'game' %}" class="menu-item">
+            <span class="menu-icon">🎮</span>
+            <span class="menu-title">Play a Game</span>
+        </a>
+        <a href="{% url 'qa' %}" class="menu-item">
+            <span class="menu-icon">💭</span>
+            <span class="menu-title">Q & A</span>
+        </a>
+        <a href="{% url 'letter' %}" class="menu-item">
+            <span class="menu-icon">💌</span>
+            <span class="menu-title">Love Letter</span>
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Love</title>
+    <link rel="stylesheet" href="{% static 'core/style.css' %}">
+</head>
+<body>
+    <div class="background-hearts" id="bg-hearts"></div>
+    
+    {% if request.session.is_authenticated %}
+    <nav class="navbar">
+        <a href="{% url 'home' %}" class="nav-brand">Forever <span>&</span> Always</a>
+        <div>
+            <a href="{% url 'photos' %}" class="nav-link">Photos</a>
+            <a href="{% url 'game' %}" class="nav-link">Game</a>
+            <a href="{% url 'qa' %}" class="nav-link">Q&A</a>
+            <a href="{% url 'letter' %}" class="nav-link">Letter</a>
+            <a href="{% url 'logout' %}" class="nav-link" style="color: var(--primary-color);">Lock</a>
+        </div>
+    </nav>
+    {% endif %}
+
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Persistent Background Music -->
+    <audio id="bg-audio" loop autoplay>
+        <source src="{% static 'core/audio/bg_music.mp3' %}" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Music Logic
+        const audio = document.getElementById('bg-audio');
+        let hasRestored = false;
+
+        const restoreTime = () => {
+            if (hasRestored) return;
+            const savedTime = localStorage.getItem('bg_music_pos');
+            if (savedTime && savedTime > 0.1) {
+                // Seek when ready
+                audio.currentTime = parseFloat(savedTime);
+                hasRestored = true;
+            }
+        };
+
+        // Standard listeners
+        audio.addEventListener('play', restoreTime);
+        audio.addEventListener('canplay', restoreTime);
+
+        // Save position every second
+        setInterval(() => {
+            if (!audio.paused && audio.currentTime > 0) {
+                localStorage.setItem('bg_music_pos', audio.currentTime);
+            }
+        }, 1000);
+
+        // Reset storage only when it naturally loops to the start
+        audio.addEventListener('timeupdate', () => {
+            if (audio.currentTime < 0.5 && hasRestored) {
+                localStorage.setItem('bg_music_pos', 0);
+            }
+        });
+
+        const playMusic = () => {
+            if (audio.paused) {
+                audio.play().catch(e => {});
+            }
+        };
+
+        // Trigger on interaction
+        document.addEventListener('click', playMusic, { once: true });
+        document.addEventListener('touchstart', playMusic, { once: true });
+
+        // Floating hearts background
+        const heartsContainer = document.getElementById('bg-hearts');
+        for (let i = 0; i < 15; i++) {
+            let heart = document.createElement('div');
+            heart.className = 'heart-shape';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDelay = (Math.random() * 5) + 's';
+            heart.style.animationDuration = (8 + Math.random() * 5) + 's';
+            heartsContainer.appendChild(heart);
+        }
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
