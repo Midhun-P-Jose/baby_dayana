@@ -11,8 +11,8 @@ env/
 .env
 
 # Media and Static assets
-photos/
-audio/
+# photos/
+# audio/
 # Media uploaded by users (but keep static assets in repo)
 # If you add user-uploaded content in the future, uncomment these:
 # media/
