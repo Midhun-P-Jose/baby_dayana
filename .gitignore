@@ -13,12 +13,14 @@ env/
 # Media and Static assets
 photos/
 audio/
-media/
-*.jpeg
-*.jpg
-*.png
-*.mp3
-*.mpeg
+# Media uploaded by users (but keep static assets in repo)
+# If you add user-uploaded content in the future, uncomment these:
+# media/
+# *.jpeg
+# *.jpg
+# *.png
+# *.mp3
+# *.mpeg
 
 # Temporary files / OS files
 cookies.txt
